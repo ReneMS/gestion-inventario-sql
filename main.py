@@ -1,13 +1,15 @@
-from database import inicializar_db, insertar_producto, obtener_productos
+from database import inicializar_db, insertar_producto, obtener_productos, actualizar_stock, eliminar_producto
 
 def menu():
     inicializar_db()
     
     while True:
-        print("\n--- 🍎 SISTEMA DE INVENTARIO ---")
-        print("1. Agregar Producto")
-        print("2. Ver Inventario")
-        print("3. Salir")
+        print("\n--- 🍎 SISTEMA DE INVENTARIO (CRUD COMPLETO) ---")
+        print("1. Agregar Producto (Create)")
+        print("2. Ver Inventario (Read)")
+        print("3. Actualizar Stock (Update)")
+        print("4. Eliminar Producto (Delete)")
+        print("5. Salir")
         
         opcion = input("Selecciona una opción: ")
         
@@ -17,19 +19,32 @@ def menu():
             stock = int(input("Stock: "))
             precio = int(input("Precio: "))
             insertar_producto(nombre, cat, stock, precio)
-            print("✔️ Guardado.")
+            print("✔️ Producto creado.")
             
         elif opcion == "2":
             productos = obtener_productos()
             print("\n--- INVENTARIO ACTUAL ---")
-            print(f"{'ID':<3} | {'Nombre':<15} | {'Stock':<6} | {'Precio':<8}")
-            print("-" * 40)
             for p in productos:
-                # p[0]=id, p[1]=nombre, p[3]=stock, p[4]=precio
-                print(f"{p[0]:<3} | {p[1]:<15} | {p[3]:<6} | ${p[4]:<8}")
+                print(f"ID: {p[0]} | {p[1]:<15} | Stock: {p[3]:<5} | ${p[4]}")
                 
         elif opcion == "3":
+            id_prod = int(input("ID del producto a actualizar: "))
+            nuevo_val = int(input("Nuevo stock total: "))
+            actualizar_stock(id_prod, nuevo_val)
+            print("✔️ Stock actualizado.")
+            
+        elif opcion == "4":
+            id_prod = int(input("ID del producto a eliminar: "))
+            confirmar = input(f"¿Estás seguro de eliminar el ID {id_prod}? (s/n): ")
+            if confirmar.lower() == 's':
+                eliminar_producto(id_prod)
+                print("❌ Producto eliminado.")
+                
+        elif opcion == "5":
             break
+
+        else:
+            print("❌ Opción no válida.")
 
 if __name__ == "__main__":
     menu()

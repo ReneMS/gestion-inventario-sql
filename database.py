@@ -44,3 +44,19 @@ def obtener_productos():
     
     conexion.close()
     return datos
+
+def actualizar_stock(id_producto, nuevo_stock):
+    conexion = conectar()
+    cursor = conexion.cursor()
+    # La 'U' de CRUD: UPDATE
+    cursor.execute("UPDATE productos SET stock = ? WHERE id = ?", (nuevo_stock, id_producto))
+    conexion.commit()
+    conexion.close()
+
+def eliminar_producto(id_producto):
+    conexion = conectar()
+    cursor = conexion.cursor()
+    # La 'D' de CRUD: DELETE
+    cursor.execute("DELETE FROM productos WHERE id = ?", (id_producto,))
+    conexion.commit()
+    conexion.close()
